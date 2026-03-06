@@ -1,6 +1,5 @@
 import '../entities/asset.dart';
 import '../../../../core/errors/result.dart';
-import '../../../../core/errors/app_exception.dart';
 
 abstract class AssetRepository {
   Future<Result<Asset>> createAsset({
@@ -23,6 +22,7 @@ abstract class AssetRepository {
     DateTime? purchaseDate,
     DateTime? warrantyEndDate,
     int? expectedLifeDays,
+    AssetStatus? status,
     String? note,
   });
 

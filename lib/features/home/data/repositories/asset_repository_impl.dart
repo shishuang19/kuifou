@@ -70,6 +70,7 @@ class AssetRepositoryImpl implements AssetRepository {
     DateTime? purchaseDate,
     DateTime? warrantyEndDate,
     int? expectedLifeDays,
+    AssetStatus? status,
     String? note,
   }) async {
     try {
@@ -88,6 +89,7 @@ class AssetRepositoryImpl implements AssetRepository {
             purchaseDate: Value(purchaseDate?.toString().split(' ')[0] ?? existing.purchaseDate),
             warrantyEndDate: Value(warrantyEndDate?.toString().split(' ')[0]),
             expectedLifeDays: Value(expectedLifeDays ?? existing.expectedLifeDays),
+            status: Value(status?.value ?? existing.status),
             note: Value(note ?? existing.note),
             updatedAt: Value(DateTime.now()),
           );

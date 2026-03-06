@@ -5,6 +5,7 @@ import 'package:kuifou/app/app.dart';
 void main() {
   testWidgets('renders home page title', (WidgetTester tester) async {
     await tester.pumpWidget(const KuifouApp());
-    expect(find.text('首页'), findsOneWidget);
+    await tester.pumpAndSettle();
+    expect(find.text('亏否'), findsOneWidget);
   });
 }
