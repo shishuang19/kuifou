@@ -1,7 +1,8 @@
 PROJECT: 亏否 (Personal Asset Depreciation App)
 LAST_UPDATED: 2026-03-06
 CURRENT_BRANCH: main
-CURRENT_PHASE: M0 -> Bootstrap completed, moving to M1 data layer prep
+CURRENT_PHASE: M0 -> Complete. Remote repository synced, ready for M1 (data layer).
+GIT_REMOTE_URL: https://github.com/shishuang19/kuifou.git
 
 [SESSION_START_RULE]
 - Every new AI session / new terminal / branch switch must read:
@@ -30,17 +31,23 @@ CURRENT_PHASE: M0 -> Bootstrap completed, moving to M1 data layer prep
   - placeholder pages: home / asset_form / profile
   - empty module placeholders: core/* and features/category, features/report
   - baseline widget test: test/app_smoke_test.dart
+- Remote repository successfully pushed:
+  - URL: https://github.com/shishuang19/kuifou.git
+  - Commits: 3 (init + progress + cleanup)
+  - Branch tracking: main -> origin/main (up to date)
 
 [IN_PROGRESS]
-- Remote repository binding and first push.
 - Flutter SDK installation (required to run flutter pub get/test/build locally).
+- Preparing M1 task: local data layer skeleton (database/dao/repository).
 
 [NEXT]
-1. Create remote repository (GitHub/Gitee) for this project.
-2. Add remote `origin` and push `main` with upstream tracking.
-3. Install Flutter SDK, then run `flutter pub get` and `flutter test`.
-4. Continue M1 task: local data layer skeleton (database/dao/repository).
-5. Add CI skeleton after Flutter environment is available.
+1. Local: Install Flutter SDK 3.24+, run `flutter doctor` to verify.
+2. Local: Run `flutter pub get` to install dependencies.
+3. Local: Run `flutter test` to verify baseline widget test passes.
+4. Implement M1 task: SQLite schema + drift ORM setup.
+5. Implement M1 core entities: Asset, Category, DashboardMetrics.
+6. Setup Repository interfaces and skeleton implementations.
+7. Add GitHub Actions CI skeleton for lint/test automation.
 
 [OPEN_DECISIONS]
 - Confirm final app display name for package/bundle metadata (currently "亏否").
