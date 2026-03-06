@@ -1,0 +1,46 @@
+PROJECT: 亏否 (Personal Asset Depreciation App)
+LAST_UPDATED: 2026-03-06
+CURRENT_BRANCH: n/a (not a git repo)
+CURRENT_PHASE: M0 -> Spec completed, entering engineering bootstrap
+
+[SESSION_START_RULE]
+- Every new AI session / new terminal / branch switch must read:
+  1) CLAUDE.md
+  2) progress.txt
+- Every feature completion must update this file.
+
+[COMPLETED]
+- Product and planning docs completed and aligned:
+  - PRD.md
+  - APP_FLOW.md
+  - TECH_STACK.md
+  - FRONTEND_GUIDELINES.md
+  - BACKEND_STRUCTURE.md
+  - IMPLEMENTATION_PLAN.md
+- AI operation memory files created:
+  - CLAUDE.md
+  - progress.txt
+
+[IN_PROGRESS]
+- No active code implementation yet.
+- Preparing to start M0 engineering bootstrap (Flutter scaffold + base architecture).
+
+[NEXT]
+1. Initialize Flutter project scaffold following FRONTEND_GUIDELINES.md directory layout.
+2. Configure core dependencies: riverpod, go_router, drift, shared_preferences, logger.
+3. Build app shell: theme tokens, router, placeholder pages (home/add/profile).
+4. Create initial local data layer skeleton (database, dao interfaces, repositories).
+5. Add baseline quality gates (lint, format, minimal tests, CI skeleton).
+
+[OPEN_DECISIONS]
+- Confirm final app display name for package/bundle metadata (currently "亏否").
+- Confirm whether V1 includes optional encryption for local DB/backup files.
+
+[KNOWN_CONSTRAINTS]
+- V1 is single-user, local-first, offline-first.
+- No mandatory remote backend in V1.
+- Keep naming conventions and component patterns from CLAUDE.md.
+
+[HANDOFF_NOTE]
+- If you continue from this point, start with task #1 in [NEXT].
+- After finishing any item, move it to [COMPLETED] and append the date.
