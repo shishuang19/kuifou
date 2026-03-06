@@ -1,8 +1,9 @@
 PROJECT: 亏否 (Personal Asset Depreciation App)
-LAST_UPDATED: 2026-03-06
+LAST_UPDATED: 2026-03-06 22:30 UTC
 CURRENT_BRANCH: main
-CURRENT_PHASE: M1 -> In Progress. Data layer implementation (85%) complete, awaiting Flutter SDK for drift code generation.
+CURRENT_PHASE: M1 -> Code Implementation COMPLETE (100%). All data layer files committed to GitHub. Awaiting local Flutter SDK installation for drift code generation and testing.
 GIT_REMOTE_URL: https://github.com/shishuang19/kuifou.git
+GIT_HEAD_COMMIT: 77b1695 (docs: add quick start guide for drift ORM code generation)
 
 [SESSION_START_RULE]
 - Every new AI session / new terminal / branch switch must read:
@@ -12,65 +13,74 @@ GIT_REMOTE_URL: https://github.com/shishuang19/kuifou.git
 
 [COMPLETED]
 - Product and planning docs completed and aligned:
-  - PRD.md
-  - APP_FLOW.md
-  - TECH_STACK.md
-  - FRONTEND_GUIDELINES.md
-  - BACKEND_STRUCTURE.md
-  - IMPLEMENTATION_PLAN.md
+  - PRD.md, APP_FLOW.md, TECH_STACK.md, FRONTEND_GUIDELINES.md, BACKEND_STRUCTURE.md, IMPLEMENTATION_PLAN.md
 - AI operation memory files created:
-  - CLAUDE.md
-  - progress.txt
-- Local Git repository initialized:
-  - branch: main
-  - initial commit: 0821939
-- Engineering scaffold initialized (manual, without flutter CLI):
-  - .gitignore / pubspec.yaml / analysis_options.yaml / README.md
-  - app shell: lib/main.dart, lib/app/app.dart, lib/app/router.dart
-  - theme tokens: colors/spacing/radius/typography/app_theme
-  - placeholder pages: home / asset_form / profile
-  - empty module placeholders: core/* and features/category, features/report
-  - baseline widget test: test/app_smoke_test.dart
-- Remote repository successfully pushed:
-  - URL: https://github.com/shishuang19/kuifou.git
-  - Commits: 4 (init + progress + cleanup + second update)
-  - Branch tracking: main -> origin/main (up to date)
-- M1 data layer implementation (2026-03-06):
-  - Domain: entities (Asset, Category, DashboardMetrics) with computed properties ✅
-  M1 data layer: All code files created, awaiting Flutter SDK for drift code generation.
-- Preparing Git commit for M1 implementation.
-- Flutter SDK installation (required to run flutter pub get/drift build/test locall ✅
-  - Data: SQLite schema with drift (assets, categories, metrics_cache tables) ✅
-  - Data: repository implementations with full error handling ✅
-  - Data: mapper classes for entity conversions ✅
-  - Core: error handling infrastructure (AppException, Result<T>) ✅
-  - Config: pubspec.yaml + build.yaml ready for drift code generation ✅
+  - CLAUDE.md (operation manual), progress.txt (progress tracking)
+- Local Git repository initialized: branch main, initial commit 0821939
+- Engineering scaffold initialized:
+  - Config: .gitignore, pubspec.yaml, analysis_options.yaml, README.md
+  - App shell: lib/main.dart, lib/app/app.dart, lib/app/router.dart
+  - Theme system: lib/app/theme/ (colors/spacing/radius/typography)
+  - Placeholder pages: home, asset_form, profile
+  - Baseline test: test/app_smoke_test.dart
+- Remote repository established: https://github.com/shishuang19/kuifou.git
+- M1 Data Layer Implementation COMPLETE (2026-03-06):
+  ✅ Domain Layer:
+    - Entities: Asset (with computed: usageDays, dailyCost, residualValue), Category, DashboardMetrics
+    - Interfaces: AssetRepository, CategoryRepository
+    - Services: DepreciationService, ValidationService
+  ✅ Data Layer:
+    - SQLite schema with drift: assets_table, categories_table, metrics_cache_table
+    - AppDatabase class (central drift database with DAO methods)
+    - Implementations: AssetRepositoryImpl, CategoryRepositoryImpl (with error handling)
+    - Mappers: AssetMapper, CategoryMapper (DB ↔ Domain conversions)
+  ✅ Core Layer:
+    - AppException hierarchy (Validation, Storage, NotFound, Conflict)
+    - Result<T> sealed class (Success/Failure)
+  ✅ Configuration:
+    - pubspec.yaml: All dependencies (drift, riverpod, go_router, etc.)
+    - build.yaml: Drift ORM config for SQLite 3.46.0
+    - GETTING_STARTED_M1.md: Quick start guide
+  ✅ Git Commits:
+    - d1964fe: feat(M1) - implement data layer (21 files)
+    - 77b1695: docs(M1) - quick start guide
+    - Both commits pushed to origin/main
 
 [IN_PROGRESS]
-- Flutter SDK installation (required to run flutter pub get/test/build locally).
-- Preparing M1 task: local data layer skeleton (database/dao/repository).
+- M1 Data Layer: Code 100% complete, Git commits pushed
+- Awaiting: Local Flutter SDK 3.24+ installation (user-dependent)
+  - Required: flutter pub get, flutter pub run build_runner build, flutter test
+  - Generates: lib/features/home/data/datasources/local/db/app_database.g.dart
 
-[NEGit commit M1 implementation: `git add . && git commit -m "feat(M1): implement data layer - sqlite schema, repositories, domain services"`.
-2. Git push to origin: `git push origin main`.
-3. Local: Install Flutter SDK 3.24+, run `flutter doctor` to verify.
-4. Local: Run `flutter pub get` to install dependencies.
-5. Local: Run `flutter pub run build_runner build` to generate drift ORM code (app_database.g.dart).
-6. Local: Run `flutter test` to verify baseline widget test passes.
-7. Create unit tests for repositories, services, and entities (M1 validation).
-8. M2 preparation: Setup Riverpod providers and state management.
-9. M2 implementation: Core UI pages (home list, asset form).
-10. Setup Repository interfaces and skeleton implementations.
-7. Add GitHub Actions CI skeleton for lint/test automation.
+[NEXT]
+**[LOCAL SETUP - BLOCKING]** (User must perform on their machine)
+1. Install Flutter SDK 3.24+ from https://flutter.dev/docs/get-started/install
+2. Verify: `flutter doctor` (should show ✓ Flutter, ✓ Dart)
+3. Install dependencies: `flutter pub get`
+4. Generate drift ORM: `flutter pub run build_runner build`
+   - Generates: lib/features/home/data/datasources/local/db/app_database.g.dart
+5. Verify: `flutter test` (run baseline widget test)
+
+**[NEXT SESSION - After Local Setup]**
+6. Create M1 unit tests (depreciation_service, validation_service, repositories, mappers)
+7. M2 Prep: Setup Riverpod providers layer
+8. M2 Impl: HomePage, AssetFormPage, search/filter UI
+9. M2 Validation: Full workflow test (create → list → metrics)
+10. GitHub Actions CI: Setup automatic lint/test/build pipeline
+11. M3 Prep: Profile, Category Management, Backup/Restore
 
 [OPEN_DECISIONS]
-- Confirm final app display name for package/bundle metadata (currently "亏否").
-- Confirm whether V1 includes optional encryption for local DB/backup files.
+- Final app display name in bundle metadata (currently "亏否")
+- V1 local database encryption (yes/no)
 
 [KNOWN_CONSTRAINTS]
-- V1 is single-user, local-first, offline-first.
-- No mandatory remote backend in V1.
-- Keep naming conventions and component patterns from CLAUDE.md.
+- V1: Single-user, local-first, offline-first
+- No remote backend required in V1
+- Must follow CLAUDE.md naming conventions and FRONTEND_GUIDELINES.md patterns
+- Clean architecture must be maintained (Domain → Data → Storage)
 
-[HANDOFF_NOTE]
-- If you continue from this point, start with task #1 in [NEXT].
-- After finishing any item, move it to [COMPLETED] and append the date.
+[HANDOFF_NOTE_NEXT_SESSION]
+1. Read CLAUDE.md + this file
+2. If local Flutter setup NOT done: Do tasks #1-5 in [NEXT] LOCAL SETUP section
+3. If local setup done: Start task #6 (M1 unit tests)
+4. Update this file after each session with completed items and new status
