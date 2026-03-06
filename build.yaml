@@ -1,0 +1,7 @@
+targets:
+  $default:
+    builders:
+      drift_dev:
+        options:
+          # SQLite reference version
+          sqlite_version: 3.46.0

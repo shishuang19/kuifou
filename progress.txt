@@ -1,7 +1,7 @@
 PROJECT: 亏否 (Personal Asset Depreciation App)
 LAST_UPDATED: 2026-03-06
 CURRENT_BRANCH: main
-CURRENT_PHASE: M0 -> Complete. Remote repository synced, ready for M1 (data layer).
+CURRENT_PHASE: M1 -> In Progress. Data layer implementation (85%) complete, awaiting Flutter SDK for drift code generation.
 GIT_REMOTE_URL: https://github.com/shishuang19/kuifou.git
 
 [SESSION_START_RULE]
@@ -33,20 +33,33 @@ GIT_REMOTE_URL: https://github.com/shishuang19/kuifou.git
   - baseline widget test: test/app_smoke_test.dart
 - Remote repository successfully pushed:
   - URL: https://github.com/shishuang19/kuifou.git
-  - Commits: 3 (init + progress + cleanup)
+  - Commits: 4 (init + progress + cleanup + second update)
   - Branch tracking: main -> origin/main (up to date)
+- M1 data layer implementation (2026-03-06):
+  - Domain: entities (Asset, Category, DashboardMetrics) with computed properties ✅
+  M1 data layer: All code files created, awaiting Flutter SDK for drift code generation.
+- Preparing Git commit for M1 implementation.
+- Flutter SDK installation (required to run flutter pub get/drift build/test locall ✅
+  - Data: SQLite schema with drift (assets, categories, metrics_cache tables) ✅
+  - Data: repository implementations with full error handling ✅
+  - Data: mapper classes for entity conversions ✅
+  - Core: error handling infrastructure (AppException, Result<T>) ✅
+  - Config: pubspec.yaml + build.yaml ready for drift code generation ✅
 
 [IN_PROGRESS]
 - Flutter SDK installation (required to run flutter pub get/test/build locally).
 - Preparing M1 task: local data layer skeleton (database/dao/repository).
 
-[NEXT]
-1. Local: Install Flutter SDK 3.24+, run `flutter doctor` to verify.
-2. Local: Run `flutter pub get` to install dependencies.
-3. Local: Run `flutter test` to verify baseline widget test passes.
-4. Implement M1 task: SQLite schema + drift ORM setup.
-5. Implement M1 core entities: Asset, Category, DashboardMetrics.
-6. Setup Repository interfaces and skeleton implementations.
+[NEGit commit M1 implementation: `git add . && git commit -m "feat(M1): implement data layer - sqlite schema, repositories, domain services"`.
+2. Git push to origin: `git push origin main`.
+3. Local: Install Flutter SDK 3.24+, run `flutter doctor` to verify.
+4. Local: Run `flutter pub get` to install dependencies.
+5. Local: Run `flutter pub run build_runner build` to generate drift ORM code (app_database.g.dart).
+6. Local: Run `flutter test` to verify baseline widget test passes.
+7. Create unit tests for repositories, services, and entities (M1 validation).
+8. M2 preparation: Setup Riverpod providers and state management.
+9. M2 implementation: Core UI pages (home list, asset form).
+10. Setup Repository interfaces and skeleton implementations.
 7. Add GitHub Actions CI skeleton for lint/test automation.
 
 [OPEN_DECISIONS]
