@@ -1,5 +1,5 @@
 import '../../domain/entities/category.dart';
-import '../../../core/errors/result.dart';
+import '../../../../core/errors/result.dart';
 
 abstract class CategoryRepository {
   Future<Result<Category>> createCategory({

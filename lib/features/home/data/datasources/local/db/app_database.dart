@@ -15,9 +15,9 @@ class AppDatabase extends _$AppDatabase {
   int get schemaVersion => 1;
 
   // Asset DAO
-  Future<void> insertAsset(AssetCompanion asset) => into(assets).insert(asset);
+  Future<void> insertAsset(AssetsCompanion asset) => into(assets).insert(asset);
 
-  Future<int> updateAsset(AssetCompanion asset) => update(assets).replace(asset);
+  Future<bool> updateAsset(AssetsCompanion asset) => update(assets).replace(asset);
 
   Future<int> deleteAsset(String id) =>
       (delete(assets)..where((a) => a.id.equals(id))).go();
@@ -33,10 +33,10 @@ class AppDatabase extends _$AppDatabase {
       .get();
 
   // Category DAO
-  Future<void> insertCategory(CategoryCompanion category) =>
+  Future<void> insertCategory(CategoriesCompanion category) =>
       into(categories).insert(category);
 
-  Future<int> updateCategory(CategoryCompanion category) =>
+  Future<bool> updateCategory(CategoriesCompanion category) =>
       update(categories).replace(category);
 
   Future<int> deleteCategory(String id) =>

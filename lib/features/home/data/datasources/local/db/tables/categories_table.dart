@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
 @DataClassName('CategoryDb')
+@TableIndex(name: 'idx_categories_sort_order', columns: {#sortOrder})
 class Categories extends Table {
   TextColumn get id => text()();
   TextColumn get name => text().unique()();
@@ -12,9 +13,4 @@ class Categories extends Table {
 
   @override
   Set<Column> get primaryKey => {id};
-
-  @override
-  List<Index> get indexes => [
-        Index('idx_categories_sort_order', {sortOrder}),
-      ];
 }

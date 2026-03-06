@@ -1,7 +1,10 @@
 import 'package:drift/drift.dart';
-import '../entities/asset.dart';
 
 @DataClassName('AssetDb')
+@TableIndex(name: 'idx_assets_purchase_date', columns: {#purchaseDate})
+@TableIndex(name: 'idx_assets_category_id', columns: {#categoryId})
+@TableIndex(name: 'idx_assets_status', columns: {#status})
+@TableIndex(name: 'idx_assets_deleted_at', columns: {#deletedAt})
 class Assets extends Table {
   TextColumn get id => text()();
   TextColumn get name => text()();
@@ -23,13 +26,5 @@ class Assets extends Table {
   @override
   List<Set<Column>> get uniqueKeys => [
         {categoryId, name},
-      ];
-
-  @override
-  List<Index> get indexes => [
-        Index('idx_assets_purchase_date', {purchaseDate}),
-        Index('idx_assets_category_id', {categoryId}),
-        Index('idx_assets_status', {status}),
-        Index('idx_assets_deleted_at', {deletedAt}),
       ];
 }

@@ -1,6 +1,6 @@
 import '../entities/asset.dart';
-import '../../../core/errors/result.dart';
-import '../../../core/errors/app_exception.dart';
+import '../../../../core/errors/result.dart';
+import '../../../../core/errors/app_exception.dart';
 
 abstract class AssetRepository {
   Future<Result<Asset>> createAsset({
