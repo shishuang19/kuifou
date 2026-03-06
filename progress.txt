@@ -1,7 +1,7 @@
 PROJECT: 亏否 (Personal Asset Depreciation App)
 LAST_UPDATED: 2026-03-06
-CURRENT_BRANCH: n/a (not a git repo)
-CURRENT_PHASE: M0 -> Spec completed, entering engineering bootstrap
+CURRENT_BRANCH: main
+CURRENT_PHASE: M0 -> Bootstrap completed, moving to M1 data layer prep
 
 [SESSION_START_RULE]
 - Every new AI session / new terminal / branch switch must read:
@@ -20,17 +20,27 @@ CURRENT_PHASE: M0 -> Spec completed, entering engineering bootstrap
 - AI operation memory files created:
   - CLAUDE.md
   - progress.txt
+- Local Git repository initialized:
+  - branch: main
+  - initial commit: 0821939
+- Engineering scaffold initialized (manual, without flutter CLI):
+  - .gitignore / pubspec.yaml / analysis_options.yaml / README.md
+  - app shell: lib/main.dart, lib/app/app.dart, lib/app/router.dart
+  - theme tokens: colors/spacing/radius/typography/app_theme
+  - placeholder pages: home / asset_form / profile
+  - empty module placeholders: core/* and features/category, features/report
+  - baseline widget test: test/app_smoke_test.dart
 
 [IN_PROGRESS]
-- No active code implementation yet.
-- Preparing to start M0 engineering bootstrap (Flutter scaffold + base architecture).
+- Remote repository binding and first push.
+- Flutter SDK installation (required to run flutter pub get/test/build locally).
 
 [NEXT]
-1. Initialize Flutter project scaffold following FRONTEND_GUIDELINES.md directory layout.
-2. Configure core dependencies: riverpod, go_router, drift, shared_preferences, logger.
-3. Build app shell: theme tokens, router, placeholder pages (home/add/profile).
-4. Create initial local data layer skeleton (database, dao interfaces, repositories).
-5. Add baseline quality gates (lint, format, minimal tests, CI skeleton).
+1. Create remote repository (GitHub/Gitee) for this project.
+2. Add remote `origin` and push `main` with upstream tracking.
+3. Install Flutter SDK, then run `flutter pub get` and `flutter test`.
+4. Continue M1 task: local data layer skeleton (database/dao/repository).
+5. Add CI skeleton after Flutter environment is available.
 
 [OPEN_DECISIONS]
 - Confirm final app display name for package/bundle metadata (currently "亏否").
