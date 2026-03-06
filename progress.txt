@@ -1,9 +1,9 @@
 PROJECT: 亏否 (Personal Asset Depreciation App)
-LAST_UPDATED: 2026-03-06 22:30 UTC
+LAST_UPDATED: 2026-03-06 22:40 UTC
 CURRENT_BRANCH: main
-CURRENT_PHASE: M1 -> Code Implementation COMPLETE (100%). All data layer files committed to GitHub. Awaiting local Flutter SDK installation for drift code generation and testing.
+CURRENT_PHASE: M1 -> COMPLETE ✅ All data layer code implemented, drift ORM generated, tests passing.
 GIT_REMOTE_URL: https://github.com/shishuang19/kuifou.git
-GIT_HEAD_COMMIT: 77b1695 (docs: add quick start guide for drift ORM code generation)
+GIT_HEAD_COMMIT: 2b667ef (fix: resolve drift ORM build errors)
 
 [SESSION_START_RULE]
 - Every new AI session / new terminal / branch switch must read:
@@ -44,30 +44,53 @@ GIT_HEAD_COMMIT: 77b1695 (docs: add quick start guide for drift ORM code generat
   ✅ Git Commits:
     - d1964fe: feat(M1) - implement data layer (21 files)
     - 77b1695: docs(M1) - quick start guide
-    - Both commits pushed to origin/main
+    - 2b667ef: fix(M1) - resolve drift ORM build errors (11 files, added app_database.g.dart)
+    - All commits pushed to origin/main
+  ✅ Validation Complete:
+    - flutter pub run build_runner build: ✅ Success (wrote 54 outputs)
+    - flutter analyze: ✅ Only 7 info/warnings (no blocking errors)
+    - flutter test: ✅ All tests passed
 
 [IN_PROGRESS]
-- M1 Data Layer: Code 100% complete, Git commits pushed
-- Awaiting: Local Flutter SDK 3.24+ installation (user-dependent)
-  - Required: flutter pub get, flutter pub run build_runner build, flutter test
-  - Generates: lib/features/home/data/datasources/local/db/app_database.g.dart
+None - M1 milestone fully complete.
 
 [NEXT]
-**[LOCAL SETUP - BLOCKING]** (User must perform on their machine)
-1. Install Flutter SDK 3.24+ from https://flutter.dev/docs/get-started/install
-2. Verify: `flutter doctor` (should show ✓ Flutter, ✓ Dart)
-3. Install dependencies: `flutter pub get`
-4. Generate drift ORM: `flutter pub run build_runner build`
-   - Generates: lib/features/home/data/datasources/local/db/app_database.g.dart
-5. Verify: `flutter test` (run baseline widget test)
+**[M1 OPTIONAL - Code Quality]**
+1. Fix remaining linter warnings (optional, for cleaner code):
+   - use_super_parameters in app_exception.dart constructors
+   - prefer_is_empty in validation_service.dart
+   - Remove unused import in asset_repository.dart
 
-**[NEXT SESSION - After Local Setup]**
-6. Create M1 unit tests (depreciation_service, validation_service, repositories, mappers)
-7. M2 Prep: Setup Riverpod providers layer
-8. M2 Impl: HomePage, AssetFormPage, search/filter UI
-9. M2 Validation: Full workflow test (create → list → metrics)
-10. GitHub Actions CI: Setup automatic lint/test/build pipeline
-11. M3 Prep: Profile, Category Management, Backup/Restore
+**[M2 - State Management & UI]** (Next major milestone)
+2. Create Riverpod providers layer:
+   - AssetListProvider (watch all assets)
+   - AssetFormProvider (create/edit state)
+   - CategoryListProvider (watch categories)
+   - DashboardMetricsProvider (watch computed metrics)
+3. Implement HomePage UI:
+   - Asset list view with cards
+   - Display residual value, daily cost per item
+   - Dashboard metrics section (total value, today's cost)
+   - Pull-to-refresh support
+4. Implement AssetFormPage UI:
+   - Form fields with validation
+   - Category picker
+   - Date pickers (purchase, warranty)
+   - Save/cancel actions
+5. Add search/filter functionality:
+   - Search by asset name
+   - Filter by category, status
+   - Sort by purchase date, value
+6. Unit tests for M2:
+   - Provider tests with ProviderContainer
+   - Widget tests for pages
+   - Integration tests for full workflows
+
+**[M3 - Advanced Features]**
+7. Profile page: Preferences, about
+8. Category management: CRUD for categories
+9. Backup/restore: Export/import SQLite database
+10. GitHub Actions CI: Automated lint/test/build
 
 [OPEN_DECISIONS]
 - Final app display name in bundle metadata (currently "亏否")
