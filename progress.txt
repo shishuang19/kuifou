@@ -1,9 +1,9 @@
 PROJECT: 亏否 (Personal Asset Depreciation App)
-LAST_UPDATED: 2026-03-06 22:40 UTC
+LAST_UPDATED: 2026-03-06 23:10 UTC
 CURRENT_BRANCH: main
-CURRENT_PHASE: M1 -> COMPLETE ✅ All data layer code implemented, drift ORM generated, tests passing.
+CURRENT_PHASE: M2 -> IN PROGRESS ⏳ State management and core UI components complete, AssetFormPage pending.
 GIT_REMOTE_URL: https://github.com/shishuang19/kuifou.git
-GIT_HEAD_COMMIT: 2b667ef (fix: resolve drift ORM build errors)
+GIT_HEAD_COMMIT: 8f69fe3 (feat(M2): implement state management layer and core UI components)
 
 [SESSION_START_RULE]
 - Every new AI session / new terminal / branch switch must read:
@@ -51,40 +51,76 @@ GIT_HEAD_COMMIT: 2b667ef (fix: resolve drift ORM build errors)
     - flutter analyze: ✅ Only 7 info/warnings (no blocking errors)
     - flutter test: ✅ All tests passed
 
+- M2 State Management & Core UI PARTIAL (2026-03-06):
+  ✅ Provider Layer (4 files, 832 lines):
+    - asset_list_provider: appDatabase, assetRepository, assetList, assetsByCategory, assetsByStatus
+    - category_list_provider: categoryRepository, categoryList, categoryById
+    - dashboard_metrics_provider: Computed metrics (totalResidualValue, todayCost, assetCount, estimatedDailyCost)
+    - asset_form_provider: AssetFormState + AssetFormNotifier (validation, save logic)
+  ✅ UI Components (2 files, 419 lines):
+    - dashboard_metrics_card: Purple gradient card with 4-metric dashboard
+    - asset_list_item: Asset card with status badge, depreciation indicator, info columns
+  ✅ Page Updates:
+    - HomePage refactored from StatelessWidget → ConsumerWidget
+    - Integrated dashboardMetricsProvider and assetListProvider
+    - Empty states (no assets), error states, pull-to-refresh support
+  ✅ Architecture Improvements:
+    - Moved ProviderScope from main.dart to app.dart (better encapsulation)
+    - Updated AssetRepository interface: Added AssetStatus parameter to updateAsset
+  ✅ Dependencies:
+    - riverpod_annotation: ^2.6.1 (code generation)
+    - riverpod_generator: ^2.6.5 (dev dependency)
+    - build_runner: downgraded from ^2.12.2 → ^2.5.4 (compatibility)
+  ✅ Code Generation:
+    - flutter pub run build_runner build: ✅ 22 outputs generated
+  ✅ Tests:
+    - Updated app_smoke_test.dart for provider integration
+    - All tests passing ✅
+  ✅ Git Commits:
+    - 8f69fe3: feat(M2) - state management layer and core UI (18 files, +1767 lines)
+    - Pushed to origin/main
+
 [IN_PROGRESS]
-None - M1 milestone fully complete.
+**[M2 - Remaining Tasks]**
+- AssetFormPage UI implementation (create/edit form)
+- Search and filter functionality (by name, category, status)
+- M2 unit tests (provider tests, widget tests)
 
 [NEXT]
-**[M1 OPTIONAL - Code Quality]**
-1. Fix remaining linter warnings (optional, for cleaner code):
-   - use_super_parameters in app_exception.dart constructors
-   - prefer_is_empty in validation_service.dart
-   - Remove unused import in asset_repository.dart
+**[M2 - Complete AssetFormPage]** (IMMEDIATE PRIORITY)
+1. Create AssetFormPage UI:
+   - Form fields: name, category picker, icon picker, purchase price, purchase date
+   - Validation UI: Display errors from AssetFormState.errors map
+   - Save/Cancel buttons: Call AssetFormNotifier.save() and navigate back
+   - Integration: Use existing AssetFormProvider from providers/
+2. Update router.dart: Add /asset/new and /asset/:id routes
+3. Wire HomePage FAB: Navigate to AssetFormPage on tap
+4. End-to-end test: Create asset → View in list → Edit → Delete
 
-**[M2 - State Management & UI]** (Next major milestone)
-2. Create Riverpod providers layer:
-   - AssetListProvider (watch all assets)
-   - AssetFormProvider (create/edit state)
-   - CategoryListProvider (watch categories)
-   - DashboardMetricsProvider (watch computed metrics)
-3. Implement HomePage UI:
-   - Asset list view with cards
-   - Display residual value, daily cost per item
-   - Dashboard metrics section (total value, today's cost)
-   - Pull-to-refresh support
-4. Implement AssetFormPage UI:
-   - Form fields with validation
-   - Category picker
-   - Date pickers (purchase, warranty)
-   - Save/cancel actions
-5. Add search/filter functionality:
-   - Search by asset name
-   - Filter by category, status
-   - Sort by purchase date, value
-6. Unit tests for M2:
-   - Provider tests with ProviderContainer
-   - Widget tests for pages
-   - Integration tests for full workflows
+**[M2 - Search & Filter]** (HIGH PRIORITY)
+5. Create filter providers:
+   - Filter by category (use assetsByCategoryProvider)
+   - Filter by status (use assetsByStatusProvider)
+   - Search by name (create searchQueryProvider)
+6. Add SearchBar widget to HomePage AppBar
+7. Implement filter bottom sheet UI (category chips, status chips)
+8. Wire up filter state to asset list display
+
+**[M2 - Unit Tests]** (MEDIUM PRIORITY)
+9. Provider tests:
+   - assetListProvider test (mock repository)
+   - dashboardMetricsProvider test (verify calculations)
+   - AssetFormNotifier test (validation logic, save workflow)
+10. Widget tests:
+    - DashboardMetricsCard test (snapshot, metrics display)
+    - AssetListItem test (status badges, depreciation colors)
+    - HomePage integration test (with mocked providers)
+
+**[M1 OPTIONAL - Code Quality]**
+11. Fix remaining linter warnings (optional):
+    - use_super_parameters in app_exception.dart constructors
+    - prefer_is_empty in validation_service.dart
+    - Remove unused import in asset_repository.dart
 
 **[M3 - Advanced Features]**
 7. Profile page: Preferences, about
