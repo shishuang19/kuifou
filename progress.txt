@@ -1,7 +1,7 @@
 PROJECT: 亏否 (Personal Asset Depreciation App)
-LAST_UPDATED: 2026-03-06 23:10 UTC
+LAST_UPDATED: 2026-03-07 00:28 UTC
 CURRENT_BRANCH: main
-CURRENT_PHASE: M2 -> IN PROGRESS ⏳ State management and core UI components complete, AssetFormPage pending.
+CURRENT_PHASE: M2 -> READY FOR COMMIT ✅ Core features and M2 test suite completed.
 GIT_REMOTE_URL: https://github.com/shishuang19/kuifou.git
 GIT_HEAD_COMMIT: 8f69fe3 (feat(M2): implement state management layer and core UI components)
 
@@ -79,48 +79,67 @@ GIT_HEAD_COMMIT: 8f69fe3 (feat(M2): implement state management layer and core UI
   ✅ Git Commits:
     - 8f69fe3: feat(M2) - state management layer and core UI (18 files, +1767 lines)
     - Pushed to origin/main
+  ✅ AssetFormPage (create/edit) integrated (2026-03-06):
+    - Implemented full form page UI: name, category, icon, price, purchase date, warranty date, expected life, status, note
+    - Added form validation/error display wired with AssetFormNotifier
+    - Added create/edit flows with `AssetFormPage(assetId: ...)`
+    - Added category empty-state quick action to create default categories
+    - Added route upgrades: `/asset/new`, `/asset/:id/edit`, `/add` redirect
+    - Wired HomePage interactions:
+      - FAB -> create page
+      - Asset card tap -> edit page
+    - Added `assetByIdProvider` and regenerated Riverpod code
+  ✅ Validation (latest):
+    - flutter pub run build_runner build --delete-conflicting-outputs: ✅ wrote 34 outputs
+    - flutter test: ✅ All tests passed
+  ✅ Search & Filter integrated (2026-03-06):
+    - Added `asset_filter_provider`:
+      - search query filter
+      - category filter
+      - status filter
+      - sort options (date/price asc/desc)
+      - active filter count + filtered asset list providers
+    - HomePage updated:
+      - Search input bar
+      - Filter bottom sheet (status/category/sort)
+      - Filter count badge on filter button
+      - Empty state differentiation (no data vs no match)
+    - Generated provider code and validated:
+      - flutter pub run build_runner build --delete-conflicting-outputs: ✅ wrote 16 outputs
+      - flutter test: ✅ All tests passed
+  ✅ M2 Test Suite completed (2026-03-07):
+    - Widget tests:
+      - test/widgets/dashboard_metrics_card_test.dart
+      - test/widgets/asset_list_item_test.dart
+      - test/widgets/home_page_widget_test.dart
+    - Integration tests:
+      - test/integration/home_page_integration_test.dart
+    - Provider tests:
+      - test/providers/asset_filter_provider_test.dart
+      - test/providers/asset_form_provider_test.dart
+      - test/providers/asset_list_provider_test.dart
+      - test/providers/dashboard_metrics_provider_test.dart
+    - Validation:
+      - flutter test: ✅ 21 tests passed
 
 [IN_PROGRESS]
 **[M2 - Remaining Tasks]**
-- AssetFormPage UI implementation (create/edit form)
-- Search and filter functionality (by name, category, status)
-- M2 unit tests (provider tests, widget tests)
+- Commit and push M2 final code
 
 [NEXT]
-**[M2 - Complete AssetFormPage]** (IMMEDIATE PRIORITY)
-1. Create AssetFormPage UI:
-   - Form fields: name, category picker, icon picker, purchase price, purchase date
-   - Validation UI: Display errors from AssetFormState.errors map
-   - Save/Cancel buttons: Call AssetFormNotifier.save() and navigate back
-   - Integration: Use existing AssetFormProvider from providers/
-2. Update router.dart: Add /asset/new and /asset/:id routes
-3. Wire HomePage FAB: Navigate to AssetFormPage on tap
-4. End-to-end test: Create asset → View in list → Edit → Delete
+**[M2 - Release Wrap-up]**
+1. Manual end-to-end verification:
+   - Create asset → View in list → Edit asset → Apply filters
+2. Commit all M2 changes and push to origin/main
+3. Optional cleanup of non-blocking lint info:
+   - use_super_parameters in app_exception.dart
+   - prefer_is_empty in validation_service.dart
 
-**[M2 - Search & Filter]** (HIGH PRIORITY)
-5. Create filter providers:
-   - Filter by category (use assetsByCategoryProvider)
-   - Filter by status (use assetsByStatusProvider)
-   - Search by name (create searchQueryProvider)
-6. Add SearchBar widget to HomePage AppBar
-7. Implement filter bottom sheet UI (category chips, status chips)
-8. Wire up filter state to asset list display
-
-**[M2 - Unit Tests]** (MEDIUM PRIORITY)
-9. Provider tests:
-   - assetListProvider test (mock repository)
-   - dashboardMetricsProvider test (verify calculations)
-   - AssetFormNotifier test (validation logic, save workflow)
-10. Widget tests:
-    - DashboardMetricsCard test (snapshot, metrics display)
-    - AssetListItem test (status badges, depreciation colors)
-    - HomePage integration test (with mocked providers)
-
-**[M1 OPTIONAL - Code Quality]**
-11. Fix remaining linter warnings (optional):
-    - use_super_parameters in app_exception.dart constructors
-    - prefer_is_empty in validation_service.dart
-    - Remove unused import in asset_repository.dart
+**[M3 - Advanced Features]**
+4. Profile page: Preferences, about
+5. Category management: CRUD for categories
+6. Backup/restore: Export/import SQLite database
+7. GitHub Actions CI: Automated lint/test/build
 
 **[M3 - Advanced Features]**
 7. Profile page: Preferences, about

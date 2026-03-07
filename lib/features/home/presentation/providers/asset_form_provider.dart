@@ -176,17 +176,20 @@ class AssetFormNotifier extends _$AssetFormNotifier {
       errors['name'] = nameError;
     }
 
-    final priceError = ValidationService.validatePurchasePrice(state.purchasePrice);
+    final priceError =
+        ValidationService.validatePurchasePrice(state.purchasePrice);
     if (priceError != null) {
       errors['purchasePrice'] = priceError;
     }
 
-    final dateError = ValidationService.validatePurchaseDate(state.purchaseDate);
+    final dateError =
+        ValidationService.validatePurchaseDate(state.purchaseDate);
     if (dateError != null) {
       errors['purchaseDate'] = dateError;
     }
 
-    final categoryError = ValidationService.validateCategoryId(state.categoryId);
+    final categoryError =
+        ValidationService.validateCategoryId(state.categoryId);
     if (categoryError != null) {
       errors['categoryId'] = categoryError;
     }
@@ -243,9 +246,8 @@ class AssetFormNotifier extends _$AssetFormNotifier {
           return true;
         },
         failure: (error) {
-          final message = error is AppException
-              ? error.message
-              : error.toString();
+          final message =
+              error is AppException ? error.message : error.toString();
           state = state.copyWith(
             isLoading: false,
             errors: {'general': message},

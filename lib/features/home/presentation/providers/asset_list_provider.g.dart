@@ -6,7 +6,7 @@ part of 'asset_list_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appDatabaseHash() => r'884b6e3cd0449eed8003e0bd30ec3c4a1008c909';
+String _$appDatabaseHash() => r'6b3fea5b2873d755394d57b5955f1a3a0fe80d1b';
 
 /// See also [appDatabase].
 @ProviderFor(appDatabase)
@@ -22,7 +22,7 @@ final appDatabaseProvider = AutoDisposeProvider<AppDatabase>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef AppDatabaseRef = AutoDisposeProviderRef<AppDatabase>;
-String _$assetRepositoryHash() => r'e0292e6b0e8d6873b07144ca76124e047c03afcb';
+String _$assetRepositoryHash() => r'345aa32a70683ec00182e8ea5990593992e84be7';
 
 /// See also [assetRepository].
 @ProviderFor(assetRepository)
@@ -336,6 +336,135 @@ class _AssetsByStatusProviderElement
 
   @override
   String get status => (origin as AssetsByStatusProvider).status;
+}
+
+String _$assetByIdHash() => r'c2235b6e57c640924afe6793df7ee5a415763342';
+
+/// See also [assetById].
+@ProviderFor(assetById)
+const assetByIdProvider = AssetByIdFamily();
+
+/// See also [assetById].
+class AssetByIdFamily extends Family<AsyncValue<Asset?>> {
+  /// See also [assetById].
+  const AssetByIdFamily();
+
+  /// See also [assetById].
+  AssetByIdProvider call(
+    String assetId,
+  ) {
+    return AssetByIdProvider(
+      assetId,
+    );
+  }
+
+  @override
+  AssetByIdProvider getProviderOverride(
+    covariant AssetByIdProvider provider,
+  ) {
+    return call(
+      provider.assetId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'assetByIdProvider';
+}
+
+/// See also [assetById].
+class AssetByIdProvider extends AutoDisposeFutureProvider<Asset?> {
+  /// See also [assetById].
+  AssetByIdProvider(
+    String assetId,
+  ) : this._internal(
+          (ref) => assetById(
+            ref as AssetByIdRef,
+            assetId,
+          ),
+          from: assetByIdProvider,
+          name: r'assetByIdProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$assetByIdHash,
+          dependencies: AssetByIdFamily._dependencies,
+          allTransitiveDependencies: AssetByIdFamily._allTransitiveDependencies,
+          assetId: assetId,
+        );
+
+  AssetByIdProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.assetId,
+  }) : super.internal();
+
+  final String assetId;
+
+  @override
+  Override overrideWith(
+    FutureOr<Asset?> Function(AssetByIdRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: AssetByIdProvider._internal(
+        (ref) => create(ref as AssetByIdRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        assetId: assetId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Asset?> createElement() {
+    return _AssetByIdProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is AssetByIdProvider && other.assetId == assetId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, assetId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin AssetByIdRef on AutoDisposeFutureProviderRef<Asset?> {
+  /// The parameter `assetId` of this provider.
+  String get assetId;
+}
+
+class _AssetByIdProviderElement extends AutoDisposeFutureProviderElement<Asset?>
+    with AssetByIdRef {
+  _AssetByIdProviderElement(super.provider);
+
+  @override
+  String get assetId => (origin as AssetByIdProvider).assetId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

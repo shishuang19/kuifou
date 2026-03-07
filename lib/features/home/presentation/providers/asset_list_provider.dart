@@ -1,21 +1,27 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/entities/asset.dart';
 import '../../domain/repositories/asset_repository.dart';
 import '../../data/repositories/asset_repository_impl.dart';
 import '../../data/datasources/local/db/app_database.dart';
-import 'package:drift/native.dart';
+import '../../data/datasources/local/db/database_connection.dart';
+import 'web_in_memory_repositories.dart';
 
 part 'asset_list_provider.g.dart';
 
 // Database provider (singleton)
 @riverpod
 AppDatabase appDatabase(AppDatabaseRef ref) {
-  return AppDatabase(NativeDatabase.memory());
+  return AppDatabase(getDatabaseConnection(inMemory: true));
 }
 
 // Asset repository provider
 @riverpod
 AssetRepository assetRepository(AssetRepositoryRef ref) {
+  if (kIsWeb) {
+    return WebInMemoryAssetRepository();
+  }
+
   final database = ref.watch(appDatabaseProvider);
   return AssetRepositoryImpl(database: database);
 }
@@ -25,7 +31,7 @@ AssetRepository assetRepository(AssetRepositoryRef ref) {
 Future<List<Asset>> assetList(AssetListRef ref) async {
   final repository = ref.watch(assetRepositoryProvider);
   final result = await repository.getAllAssets();
-  
+
   return result.when(
     success: (assets) => assets,
     failure: (error) => throw error,
@@ -40,7 +46,7 @@ Future<List<Asset>> assetsByCategory(
 ) async {
   final repository = ref.watch(assetRepositoryProvider);
   final result = await repository.getAssetsByCategory(categoryId);
-  
+
   return result.when(
     success: (assets) => assets,
     failure: (error) => throw error,
@@ -55,9 +61,24 @@ Future<List<Asset>> assetsByStatus(
 ) async {
   final repository = ref.watch(assetRepositoryProvider);
   final result = await repository.getAssetsByStatus(status);
-  
+
   return result.when(
     success: (assets) => assets,
+    failure: (error) => throw error,
+  );
+}
+
+// Single asset by ID
+@riverpod
+Future<Asset?> assetById(
+  AssetByIdRef ref,
+  String assetId,
+) async {
+  final repository = ref.watch(assetRepositoryProvider);
+  final result = await repository.getAssetById(assetId);
+
+  return result.when(
+    success: (asset) => asset,
     failure: (error) => throw error,
   );
 }
