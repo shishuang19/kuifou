@@ -1,9 +1,9 @@
 PROJECT: 亏否 (Personal Asset Depreciation App)
-LAST_UPDATED: 2026-03-07 00:28 UTC
+LAST_UPDATED: 2026-03-07 01:15 UTC
 CURRENT_BRANCH: main
-CURRENT_PHASE: M2 -> READY FOR COMMIT ✅ Core features and M2 test suite completed.
+CURRENT_PHASE: M2 COMPLETED ✅ → M3 READY
 GIT_REMOTE_URL: https://github.com/shishuang19/kuifou.git
-GIT_HEAD_COMMIT: 8f69fe3 (feat(M2): implement state management layer and core UI components)
+GIT_HEAD_COMMIT: f587c6a (feat(M2): complete AssetFormPage, search/filter and Web platform support)
 
 [SESSION_START_RULE]
 - Every new AI session / new terminal / branch switch must read:
@@ -122,30 +122,72 @@ GIT_HEAD_COMMIT: 8f69fe3 (feat(M2): implement state management layer and core UI
     - Validation:
       - flutter test: ✅ 21 tests passed
 
+- M2 COMPLETE - Web Platform Support (2026-03-07):
+  ✅ Cross-Platform Database Abstraction:
+    - Created conditional import system (database_connection.dart)
+    - database_connection_native.dart: NativeDatabase.memory()
+    - database_connection_web.dart: WebDatabase (IndexedDB)
+    - database_connection_stub.dart: Fallback error
+  ✅ Web In-Memory Repositories:
+    - WebInMemoryAssetRepository: Full CRUD in memory (demoAssets list)
+    - WebInMemoryCategoryRepository: Full CRUD in memory (demoCategories list)
+    - Auto-detection via kIsWeb in assetRepositoryProvider/categoryRepositoryProvider
+  ✅ Demo Data Provider:
+    - demo_data_provider: 4 demo assets, 2 demo categories, computed metrics
+    - Exposed as demoAssets/demoCategories lists for Web repository mutations
+  ✅ Platform Support:
+    - macOS: flutter create --platforms=macos (Runner.xcodeproj + configs)
+    - Web: flutter create --platforms=web (web/index.html + icons)
+  ✅ Provider Unification:
+    - Fixed mixed demo/real provider usage across HomePage/AssetFormPage
+    - All pages now use unified providers (auto-switch native/web)
+  ✅ Validation (2026-03-07):
+    - flutter pub run build_runner build: ✅ wrote 52 outputs
+    - flutter test: ✅ 20 tests passed
+    - flutter build web --release: ✅ Success (18.5s)
+    - Web functionality verified:
+      ✓ HomePage renders with demo data (4 assets, 2 categories)
+      ✓ Create/edit asset form works
+      ✓ Search by name works
+      ✓ Filter by category/status works
+      ✓ Dashboard metrics calculation works
+  ✅ Git Commits:
+    - f587c6a: feat(M2) - complete AssetFormPage, search/filter and Web platform support (64 files)
+    - Pushed to origin/main
+  ✅ M2 Milestone Status: COMPLETE ✅
+    - All features implemented and tested
+    - Web platform fully functional
+    - Ready for M3 advanced features
+
 [IN_PROGRESS]
-**[M2 - Remaining Tasks]**
-- Commit and push M2 final code
+(None - M2 completed)
 
 [NEXT]
-**[M2 - Release Wrap-up]**
-1. Manual end-to-end verification:
-   - Create asset → View in list → Edit asset → Apply filters
-2. Commit all M2 changes and push to origin/main
-3. Optional cleanup of non-blocking lint info:
-   - use_super_parameters in app_exception.dart
-   - prefer_is_empty in validation_service.dart
+**[M3 - Advanced Features (Ready to Start)]**
 
-**[M3 - Advanced Features]**
-4. Profile page: Preferences, about
-5. Category management: CRUD for categories
-6. Backup/restore: Export/import SQLite database
-7. GitHub Actions CI: Automated lint/test/build
+Priority 1 - Profile & Settings Page:
+  1. Profile page skeleton (features/profile/)
+  2. User preferences UI (theme, language, default depreciation method)
+  3. About section (version, copyright, license)
+  4. Preferences persistence (SharedPreferences)
 
-**[M3 - Advanced Features]**
-7. Profile page: Preferences, about
-8. Category management: CRUD for categories
-9. Backup/restore: Export/import SQLite database
-10. GitHub Actions CI: Automated lint/test/build
+Priority 2 - Category Management:
+  5. Category list page with CRUD operations
+  6. Category form (name, icon emoji picker, description)
+  7. Category deletion validation (check if used by assets)
+  8. Category sorting/reordering
+
+Priority 3 - Backup & Restore:
+  9. Export database to JSON/SQL file
+  10. Import database from backup file
+  11. Share backup file via platform share sheet
+  12. Backup validation and error handling
+
+Optional:
+  - GitHub Actions CI workflow (lint, test, build)
+  - Add more unit tests for existing features
+  - Performance optimization for large asset lists
+  - Fix non-blocking lint warnings (use_super_parameters, prefer_is_empty)
 
 [OPEN_DECISIONS]
 - Final app display name in bundle metadata (currently "亏否")
@@ -158,7 +200,8 @@ GIT_HEAD_COMMIT: 8f69fe3 (feat(M2): implement state management layer and core UI
 - Clean architecture must be maintained (Domain → Data → Storage)
 
 [HANDOFF_NOTE_NEXT_SESSION]
-1. Read CLAUDE.md + this file
-2. If local Flutter setup NOT done: Do tasks #1-5 in [NEXT] LOCAL SETUP section
-3. If local setup done: Start task #6 (M1 unit tests)
-4. Update this file after each session with completed items and new status
+1. Read CLAUDE.md + progress.txt (required for every new session)
+2. Review M3 tasks in [NEXT] section
+3. Read IMPLEMENTATION_PLAN.md for M3 detailed requirements
+4. Start with Priority 1 (Profile & Settings Page) or continue where left off
+5. Update this file after each task completion
