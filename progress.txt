@@ -1,9 +1,9 @@
 PROJECT: 亏否 (Personal Asset Depreciation App)
-LAST_UPDATED: 2026-03-07 01:15 UTC
-CURRENT_BRANCH: main
-CURRENT_PHASE: M2 COMPLETED ✅ → M3 READY
+LAST_UPDATED: 2026-03-07 15:48 UTC
+CURRENT_BRANCH: phase/m3-foundation
+CURRENT_PHASE: M3 IN PROGRESS 🚧 (Priority 1/2 done, Priority 3 core done; backup file workflow pending)
 GIT_REMOTE_URL: https://github.com/shishuang19/kuifou.git
-GIT_HEAD_COMMIT: f587c6a (feat(M2): complete AssetFormPage, search/filter and Web platform support)
+GIT_HEAD_COMMIT: 99462de (chore: fix lint warnings)
 
 [SESSION_START_RULE]
 - Every new AI session / new terminal / branch switch must read:
@@ -16,6 +16,12 @@ GIT_HEAD_COMMIT: f587c6a (feat(M2): complete AssetFormPage, search/filter and We
   - PRD.md, APP_FLOW.md, TECH_STACK.md, FRONTEND_GUIDELINES.md, BACKEND_STRUCTURE.md, IMPLEMENTATION_PLAN.md
 - AI operation memory files created:
   - CLAUDE.md (operation manual), progress.txt (progress tracking)
+- Workflow policy updated (2026-03-07):
+  - Future milestone development must use dedicated phase branch
+  - Naming convention: `phase/mX-<topic>`
+  - Current work branch switched to: `phase/m3-foundation`
+- M3 summary document created (2026-03-07):
+  - M3_ADVANCED_FEATURES_PROGRESS.md
 - Local Git repository initialized: branch main, initial commit 0821939
 - Engineering scaffold initialized:
   - Config: .gitignore, pubspec.yaml, analysis_options.yaml, README.md
@@ -159,35 +165,156 @@ GIT_HEAD_COMMIT: f587c6a (feat(M2): complete AssetFormPage, search/filter and We
     - Web platform fully functional
     - Ready for M3 advanced features
 
+- M3 Profile & Settings Foundation PARTIAL (2026-03-07):
+  ✅ Profile preferences domain model:
+    - Added `ProfilePreferences` entity
+    - Added enums: theme, language, default depreciation method
+  ✅ Local persistence with SharedPreferences:
+    - Added `ProfilePreferencesService` for load/save
+    - Storage keys standardized under `profile.*`
+  ✅ State management:
+    - Added `profilePreferencesNotifierProvider` (AsyncValue lifecycle)
+    - Added `appThemeModeProvider` for app-level theme mode
+  ✅ App-level integration:
+    - `KuifouApp` wired to themeMode from preferences
+    - Added `AppTheme.lightTheme` + existing dark theme dual-mode support
+  ✅ Profile page implementation:
+    - Replaced placeholder with full settings page
+    - Added loading/error/data rendering with retry
+    - Added preference controls (theme/language/default method)
+    - Added About section (app info/version/tagline/copyright)
+    - Added "恢复默认设置" action
+  ✅ New tests:
+    - test/providers/profile_preferences_provider_test.dart
+    - test/widgets/profile_page_widget_test.dart
+  ✅ Validation:
+    - flutter test test/providers/profile_preferences_provider_test.dart test/widgets/profile_page_widget_test.dart: ✅ 5 tests passed
+    - flutter test test/app_smoke_test.dart test/providers/ test/widgets/ test/integration/: ✅ 26 tests passed
+    - flutter analyze: ✅ No issues found
+
+- M3 Category Management PARTIAL (2026-03-07):
+  ✅ Category management provider:
+    - Added `categoryManagementNotifierProvider`
+    - CRUD operations encapsulated in notifier
+    - Added deletion guards:
+      - default category cannot be deleted
+      - category in use by assets cannot be deleted
+    - Added reorder operations:
+      - move up / move down via sortOrder swap
+  ✅ Category management page:
+    - Added `CategoryPage` with loading/error/empty/data states
+    - Added category create/edit dialog with validation and icon suggestions
+    - Added delete confirmation flow + user feedback
+    - Added usage count display per category
+    - Added summary card and action controls
+  ✅ Navigation integration:
+    - Added route: `/categories`
+    - Added Profile entry to open category management
+    - Added backup/restore placeholder entry in profile
+  ✅ New tests:
+    - test/providers/category_management_provider_test.dart
+    - test/widgets/category_page_widget_test.dart
+  ✅ Validation:
+    - flutter test test/providers/category_management_provider_test.dart test/widgets/category_page_widget_test.dart test/providers/profile_preferences_provider_test.dart test/widgets/profile_page_widget_test.dart: ✅ 9 tests passed
+    - flutter test test/app_smoke_test.dart test/providers/ test/widgets/ test/integration/: ✅ 30 tests passed
+    - flutter analyze: ✅ No issues found
+
+- M3 Backup & Restore Foundation PARTIAL (2026-03-07):
+  ✅ Backup domain model:
+    - Added `BackupPayload` / `BackupCategoryRecord` / `BackupAssetRecord`
+    - Added schema version and payload parsing/serialization
+  ✅ Backup service:
+    - Added `BackupService.exportBackupJson()`
+    - Added `BackupService.restoreFromJson()`
+    - Added payload validation (schema/version/reference integrity)
+    - Added restore failure rollback attempt
+  ✅ Backup page UI:
+    - Added `BackupRestorePage` (`/backup` route)
+    - Added export JSON button + copy to clipboard
+    - Added import text area + confirm restore flow
+    - Added restore progress and result feedback
+  ✅ Navigation integration:
+    - Profile "备份与恢复" entry now navigates to backup page
+    - Added `backupServiceProvider`
+  ✅ New tests:
+    - test/providers/backup_service_test.dart
+    - test/widgets/backup_restore_page_widget_test.dart
+  ✅ Validation:
+    - flutter test test/providers/backup_service_test.dart test/widgets/backup_restore_page_widget_test.dart test/providers/category_management_provider_test.dart test/widgets/category_page_widget_test.dart test/providers/profile_preferences_provider_test.dart test/widgets/profile_page_widget_test.dart: ✅ 13 tests passed
+    - flutter test test/app_smoke_test.dart test/providers/ test/widgets/ test/integration/: ✅ 34 tests passed
+    - flutter analyze: ✅ No issues found
+
+- M3 Preference Wiring PARTIAL (2026-03-07):
+  ✅ Language preference connected to app locale:
+    - Added `appLocaleProvider`
+    - `MaterialApp.router` now binds `locale` from preferences
+    - Added `supportedLocales` and localization delegates
+    - Added `flutter_localizations` dependency and aligned `intl` version
+  ✅ Default depreciation method connected to create form defaults:
+    - Added `defaultDepreciationMethodPreferenceProvider`
+    - Asset create form now initializes default depreciation method + expected life days
+    - Added depreciation method selector in `AssetFormPage`
+    - Changing depreciation method auto-fills expected life days (editable)
+  ✅ FAQ entry:
+    - Added FAQ entry in Profile page with dialog content
+  ✅ New/updated tests:
+    - Updated test/providers/profile_preferences_provider_test.dart (locale provider assertion)
+    - Updated test/providers/asset_form_provider_test.dart (default depreciation assertion)
+  ✅ Validation:
+    - flutter test test/providers/profile_preferences_provider_test.dart test/providers/asset_form_provider_test.dart test/widgets/profile_page_widget_test.dart: ✅ 10 tests passed
+    - flutter test test/app_smoke_test.dart test/providers/ test/widgets/ test/integration/: ✅ 36 tests passed
+    - flutter analyze: ✅ No issues found
+
+- M3 Category Description Support PARTIAL (2026-03-07):
+  ✅ Domain & repository:
+    - Added `Category.description` field
+    - Updated `CategoryRepository` create/update contract with description support
+  ✅ Database schema + migration:
+    - Added `description` column to `categories` table (default empty string)
+    - Upgraded `AppDatabase.schemaVersion` to 2
+    - Added migration strategy for v1 -> v2
+    - Regenerated drift/riverpod artifacts via build_runner
+  ✅ Data flow updates:
+    - Mapper, repository impl, and Web in-memory repository now persist description
+    - Backup payload/service now includes category description round-trip
+  ✅ UI updates:
+    - Category create/edit dialog adds description input
+    - Category list card displays description (when not empty)
+  ✅ Test updates:
+    - Updated category/backup fake repositories for new interface
+  ✅ Validation:
+    - flutter test test/providers/category_management_provider_test.dart test/widgets/category_page_widget_test.dart test/providers/backup_service_test.dart test/widgets/backup_restore_page_widget_test.dart: ✅ 8 tests passed
+    - flutter test test/app_smoke_test.dart test/providers/ test/widgets/ test/integration/: ✅ 36 tests passed
+    - flutter analyze: ✅ No issues found
+    - flutter build web --release: ✅ Success
+
+- M3 Category Ordering UX POLISH (2026-03-07):
+  ✅ Replaced up/down buttons with drag-and-drop ordering on Category page
+  ✅ Added `reorderCategory(oldIndex, newIndex)` in category management provider
+  ✅ Added drag handle hint + `ReorderableListView` interaction
+  ✅ Added provider test for reorder behavior and sortOrder normalization
+  ✅ Validation:
+    - flutter test test/providers/category_management_provider_test.dart test/widgets/category_page_widget_test.dart: ✅ 5 tests passed
+
 [IN_PROGRESS]
-(None - M2 completed)
+**[M3 - Remaining Work]**
+- Backup/restore follow-up:
+  - file share sheet integration for export/import
+  - optional encrypted backup design (pending decision)
 
 [NEXT]
-**[M3 - Advanced Features (Ready to Start)]**
-
-Priority 1 - Profile & Settings Page:
-  1. Profile page skeleton (features/profile/)
-  2. User preferences UI (theme, language, default depreciation method)
-  3. About section (version, copyright, license)
-  4. Preferences persistence (SharedPreferences)
-
-Priority 2 - Category Management:
-  5. Category list page with CRUD operations
-  6. Category form (name, icon emoji picker, description)
-  7. Category deletion validation (check if used by assets)
-  8. Category sorting/reordering
+**[M3 - Advanced Features (Next Slice)]**
 
 Priority 3 - Backup & Restore:
-  9. Export database to JSON/SQL file
-  10. Import database from backup file
-  11. Share backup file via platform share sheet
-  12. Backup validation and error handling
+  1. Share backup file via platform share sheet
+  2. Import from picked file (instead of paste only)
+  3. Optional backup integrity hash/signature
 
 Optional:
   - GitHub Actions CI workflow (lint, test, build)
   - Add more unit tests for existing features
   - Performance optimization for large asset lists
-  - Fix non-blocking lint warnings (use_super_parameters, prefer_is_empty)
+  - Improve desktop UX polish for Profile/Category pages
 
 [OPEN_DECISIONS]
 - Final app display name in bundle metadata (currently "亏否")
@@ -203,5 +330,5 @@ Optional:
 1. Read CLAUDE.md + progress.txt (required for every new session)
 2. Review M3 tasks in [NEXT] section
 3. Read IMPLEMENTATION_PLAN.md for M3 detailed requirements
-4. Start with Priority 1 (Profile & Settings Page) or continue where left off
+4. Continue with backup file I/O integration
 5. Update this file after each task completion

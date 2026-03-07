@@ -5,6 +5,7 @@ abstract class CategoryRepository {
   Future<Result<Category>> createCategory({
     required String name,
     required String icon,
+    String description = '',
     int sortOrder = 0,
     bool isDefault = false,
   });
@@ -13,6 +14,7 @@ abstract class CategoryRepository {
     required String id,
     String? name,
     String? icon,
+    String? description,
     int? sortOrder,
     bool? isDefault,
   });

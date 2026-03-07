@@ -4,6 +4,7 @@ class Category extends Equatable {
   final String id;
   final String name;
   final String icon;
+  final String description;
   final int sortOrder;
   final bool isDefault;
   final DateTime createdAt;
@@ -13,6 +14,7 @@ class Category extends Equatable {
     required this.id,
     required this.name,
     required this.icon,
+    this.description = '',
     required this.sortOrder,
     required this.isDefault,
     required this.createdAt,
@@ -24,6 +26,7 @@ class Category extends Equatable {
         id,
         name,
         icon,
+        description,
         sortOrder,
         isDefault,
         createdAt,

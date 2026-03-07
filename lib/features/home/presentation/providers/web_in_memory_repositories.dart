@@ -123,6 +123,7 @@ class WebInMemoryCategoryRepository implements CategoryRepository {
   Future<Result<Category>> createCategory({
     required String name,
     required String icon,
+    String description = '',
     int sortOrder = 0,
     bool isDefault = false,
   }) async {
@@ -131,6 +132,7 @@ class WebInMemoryCategoryRepository implements CategoryRepository {
       id: _nextId(),
       name: name,
       icon: icon,
+      description: description,
       sortOrder: sortOrder,
       isDefault: isDefault,
       createdAt: now,
@@ -146,6 +148,7 @@ class WebInMemoryCategoryRepository implements CategoryRepository {
     required String id,
     String? name,
     String? icon,
+    String? description,
     int? sortOrder,
     bool? isDefault,
   }) async {
@@ -159,6 +162,7 @@ class WebInMemoryCategoryRepository implements CategoryRepository {
       id: current.id,
       name: name ?? current.name,
       icon: icon ?? current.icon,
+      description: description ?? current.description,
       sortOrder: sortOrder ?? current.sortOrder,
       isDefault: isDefault ?? current.isDefault,
       createdAt: current.createdAt,

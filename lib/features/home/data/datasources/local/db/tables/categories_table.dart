@@ -6,6 +6,7 @@ class Categories extends Table {
   TextColumn get id => text()();
   TextColumn get name => text().unique()();
   TextColumn get icon => text()();
+  TextColumn get description => text().withDefault(const Constant(''))();
   IntColumn get sortOrder => integer().withDefault(const Constant(0))();
   BoolColumn get isDefault => boolean().withDefault(const Constant(false))();
   DateTimeColumn get createdAt => dateTime()();

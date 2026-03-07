@@ -1,7 +1,9 @@
 import 'package:go_router/go_router.dart';
 
 import '../features/asset_form/asset_form_page.dart';
+import '../features/category/category_page.dart';
 import '../features/home/home_page.dart';
+import '../features/profile/backup_restore_page.dart';
 import '../features/profile/profile_page.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -32,6 +34,14 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/profile',
       builder: (_, __) => const ProfilePage(),
+    ),
+    GoRoute(
+      path: '/categories',
+      builder: (_, __) => const CategoryPage(),
+    ),
+    GoRoute(
+      path: '/backup',
+      builder: (_, __) => const BackupRestorePage(),
     ),
   ],
 );

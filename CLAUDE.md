@@ -19,6 +19,7 @@
 - 资产计算逻辑必须可追溯，禁止“黑箱”计算。
 - 每完成一个功能，必须更新 `progress.txt`。
 - 进入新会话、新终端、切换分支时，先读取 `progress.txt` 再行动。
+- 每个阶段开发必须在独立分支完成并提交（建议命名：`phase/mX-<topic>`），避免直接在 `main` 累积阶段改动。
 
 ## 3. 技术栈摘要（V1）
 - Flutter 3.24+
@@ -141,10 +142,11 @@ Forbidden:
 ## 11. 会话执行模板（AI）
 1. 读取 `CLAUDE.md` + `progress.txt`
 2. 明确当前任务属于哪个里程碑（M0~M5）
-3. 执行最小可交付改动
-4. 运行必要验证（lint/test/手工检查）
-5. 更新 `progress.txt`
-6. 输出变更摘要与下一步建议
+3. 创建/切换到当前阶段分支（`phase/mX-<topic>`）
+4. 执行最小可交付改动
+5. 运行必要验证（lint/test/手工检查）
+6. 更新 `progress.txt`
+7. 输出变更摘要与下一步建议
 
 ## 12. 文档映射
 - 产品规则：`PRD.md`
@@ -155,5 +157,5 @@ Forbidden:
 - 项目排期：`IMPLEMENTATION_PLAN.md`
 
 ---
-Last Updated: 2026-03-06
+Last Updated: 2026-03-07
 Owner: S.S.

@@ -11,12 +11,14 @@ class CategoryRepositoryImpl implements CategoryRepository {
   final AppDatabase _database;
   static const _uuid = Uuid();
 
-  CategoryRepositoryImpl({required AppDatabase database}) : _database = database;
+  CategoryRepositoryImpl({required AppDatabase database})
+      : _database = database;
 
   @override
   Future<Result<Category>> createCategory({
     required String name,
     required String icon,
+    String description = '',
     int sortOrder = 0,
     bool isDefault = false,
   }) async {
@@ -28,6 +30,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
         id: Value(categoryId),
         name: Value(name),
         icon: Value(icon),
+        description: Value(description),
         sortOrder: Value(sortOrder),
         isDefault: Value(isDefault),
         createdAt: Value(now),
@@ -58,6 +61,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
     required String id,
     String? name,
     String? icon,
+    String? description,
     int? sortOrder,
     bool? isDefault,
   }) async {
@@ -72,6 +76,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
       final updated = existing.toCompanion(true).copyWith(
             name: Value(name ?? existing.name),
             icon: Value(icon ?? existing.icon),
+            description: Value(description ?? existing.description),
             sortOrder: Value(sortOrder ?? existing.sortOrder),
             isDefault: Value(isDefault ?? existing.isDefault),
             updatedAt: Value(DateTime.now()),
@@ -121,7 +126,8 @@ class CategoryRepositoryImpl implements CategoryRepository {
   Future<Result<Category?>> getCategoryById(String id) async {
     try {
       final category = await _database.getCategoryById(id);
-      return Success(category != null ? CategoryMapper.toDomain(category) : null);
+      return Success(
+          category != null ? CategoryMapper.toDomain(category) : null);
     } on AppException catch (e) {
       return Failure(e);
     } catch (e) {

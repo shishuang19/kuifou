@@ -6,6 +6,8 @@ import 'package:kuifou/features/home/domain/entities/asset.dart';
 import 'package:kuifou/features/home/domain/repositories/asset_repository.dart';
 import 'package:kuifou/features/home/presentation/providers/asset_form_provider.dart';
 import 'package:kuifou/features/home/presentation/providers/asset_list_provider.dart';
+import 'package:kuifou/features/profile/domain/entities/profile_preferences.dart';
+import 'package:kuifou/features/profile/presentation/providers/profile_preferences_provider.dart';
 
 class _FakeAssetRepository implements AssetRepository {
   bool createCalled = false;
@@ -126,10 +128,17 @@ class _FakeAssetRepository implements AssetRepository {
 }
 
 void main() {
-  ProviderContainer createContainer(_FakeAssetRepository repository) {
+  ProviderContainer createContainer(
+    _FakeAssetRepository repository, {
+    DepreciationMethodPreference? defaultMethod,
+  }) {
     return ProviderContainer(
       overrides: [
         assetRepositoryProvider.overrideWith((ref) => repository),
+        if (defaultMethod != null)
+          defaultDepreciationMethodPreferenceProvider.overrideWith(
+            (ref) => defaultMethod,
+          ),
       ],
     );
   }
@@ -199,6 +208,25 @@ void main() {
       expect(repository.updateCalled, isTrue);
       expect(repository.lastName, 'New Camera');
       expect(repository.lastStatus, AssetStatus.idle);
+    });
+
+    test('create defaults follow depreciation method preference', () {
+      final repository = _FakeAssetRepository();
+      final container = createContainer(
+        repository,
+        defaultMethod: DepreciationMethodPreference.doubleDeclining,
+      );
+      addTearDown(container.dispose);
+
+      final state = container.read(assetFormNotifierProvider);
+      expect(
+        state.depreciationMethod,
+        DepreciationMethodPreference.doubleDeclining,
+      );
+      expect(
+        state.expectedLifeDays,
+        DepreciationMethodPreference.doubleDeclining.defaultExpectedLifeDays,
+      );
     });
   });
 }

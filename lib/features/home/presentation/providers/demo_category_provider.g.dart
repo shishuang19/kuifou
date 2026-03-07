@@ -6,7 +6,7 @@ part of 'demo_category_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$demoCategoriesHash() => r'aedd7520771249cc4d1e14b4ce320cbd2d7c3583';
+String _$demoCategoriesHash() => r'52c439453d28a2f76ff80ae9305f25d8f7c19588';
 
 /// 演示用分类数据（Web 平台临时方案）
 ///

@@ -6,7 +6,7 @@ part of 'asset_form_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$assetFormNotifierHash() => r'8517b7ba7080c4ae2b44ffd3eaa25fc81c2dbb65';
+String _$assetFormNotifierHash() => r'ebcec38ea95dee57ab5ec2ea1bd6d351614d2b3d';
 
 /// See also [AssetFormNotifier].
 @ProviderFor(AssetFormNotifier)

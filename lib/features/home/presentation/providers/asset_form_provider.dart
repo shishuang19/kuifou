@@ -1,6 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/entities/asset.dart';
 import '../../domain/services/validation_service.dart';
+import '../../../profile/domain/entities/profile_preferences.dart';
+import '../../../profile/presentation/providers/profile_preferences_provider.dart';
 import 'asset_list_provider.dart';
 import '../../../../core/errors/app_exception.dart';
 
@@ -16,6 +18,7 @@ class AssetFormState {
   final DateTime purchaseDate;
   final DateTime? warrantyEndDate;
   final int? expectedLifeDays;
+  final DepreciationMethodPreference depreciationMethod;
   final AssetStatus status;
   final String? note;
   final Map<String, String?> errors;
@@ -30,6 +33,7 @@ class AssetFormState {
     required this.purchaseDate,
     this.warrantyEndDate,
     this.expectedLifeDays,
+    this.depreciationMethod = DepreciationMethodPreference.straightLine,
     this.status = AssetStatus.using,
     this.note,
     this.errors = const {},
@@ -45,6 +49,7 @@ class AssetFormState {
     DateTime? purchaseDate,
     DateTime? warrantyEndDate,
     int? expectedLifeDays,
+    DepreciationMethodPreference? depreciationMethod,
     AssetStatus? status,
     String? note,
     Map<String, String?>? errors,
@@ -59,6 +64,7 @@ class AssetFormState {
       purchaseDate: purchaseDate ?? this.purchaseDate,
       warrantyEndDate: warrantyEndDate ?? this.warrantyEndDate,
       expectedLifeDays: expectedLifeDays ?? this.expectedLifeDays,
+      depreciationMethod: depreciationMethod ?? this.depreciationMethod,
       status: status ?? this.status,
       note: note ?? this.note,
       errors: errors ?? this.errors,
@@ -77,6 +83,9 @@ class AssetFormState {
       purchaseDate: asset.purchaseDate,
       warrantyEndDate: asset.warrantyEndDate,
       expectedLifeDays: asset.expectedLifeDays,
+      depreciationMethod: DepreciationMethodPreference.fromExpectedLifeDays(
+        asset.expectedLifeDays,
+      ),
       status: asset.status,
       note: asset.note,
     );
@@ -90,8 +99,12 @@ class AssetFormState {
 class AssetFormNotifier extends _$AssetFormNotifier {
   @override
   AssetFormState build() {
+    final defaultMethod = ref.read(defaultDepreciationMethodPreferenceProvider);
+
     return AssetFormState(
       purchaseDate: DateTime.now(),
+      expectedLifeDays: defaultMethod.defaultExpectedLifeDays,
+      depreciationMethod: defaultMethod,
     );
   }
 
@@ -102,8 +115,12 @@ class AssetFormNotifier extends _$AssetFormNotifier {
 
   // Reset form
   void reset() {
+    final defaultMethod = ref.read(defaultDepreciationMethodPreferenceProvider);
+
     state = AssetFormState(
       purchaseDate: DateTime.now(),
+      expectedLifeDays: defaultMethod.defaultExpectedLifeDays,
+      depreciationMethod: defaultMethod,
     );
   }
 
@@ -152,6 +169,13 @@ class AssetFormNotifier extends _$AssetFormNotifier {
   void updateExpectedLifeDays(int? days) {
     state = state.copyWith(
       expectedLifeDays: days,
+    );
+  }
+
+  void updateDepreciationMethod(DepreciationMethodPreference method) {
+    state = state.copyWith(
+      depreciationMethod: method,
+      expectedLifeDays: method.defaultExpectedLifeDays,
     );
   }
 

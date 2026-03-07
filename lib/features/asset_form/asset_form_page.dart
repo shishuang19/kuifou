@@ -6,6 +6,7 @@ import '../../app/theme/colors.dart';
 import '../../app/theme/radius.dart';
 import '../../app/theme/spacing.dart';
 import '../home/domain/entities/asset.dart';
+import '../profile/domain/entities/profile_preferences.dart';
 import '../home/presentation/providers/asset_form_provider.dart';
 import '../home/presentation/providers/asset_list_provider.dart';
 import '../home/presentation/providers/category_list_provider.dart';
@@ -113,6 +114,10 @@ class _AssetFormPageState extends ConsumerState<AssetFormPage> {
       AssetStatus.idle => '闲置',
       AssetStatus.disposed => '已处置',
     };
+  }
+
+  String _depreciationMethodLabel(DepreciationMethodPreference method) {
+    return method.label;
   }
 
   Future<void> _pickDate({
@@ -452,6 +457,37 @@ class _AssetFormPageState extends ConsumerState<AssetFormPage> {
             onClear: formState.isLoading
                 ? null
                 : () => notifier.updateWarrantyEndDate(null),
+          ),
+          const SizedBox(height: AppSpacing.md),
+          DropdownButtonFormField<DepreciationMethodPreference>(
+            key: ValueKey(formState.depreciationMethod),
+            initialValue: formState.depreciationMethod,
+            decoration: _inputDecoration('折旧方法', null),
+            dropdownColor: AppColors.cardBg,
+            items: DepreciationMethodPreference.values
+                .map(
+                  (method) => DropdownMenuItem<DepreciationMethodPreference>(
+                    value: method,
+                    child: Text(_depreciationMethodLabel(method)),
+                  ),
+                )
+                .toList(),
+            onChanged: formState.isLoading
+                ? null
+                : (value) {
+                    if (value == null) {
+                      return;
+                    }
+
+                    notifier.updateDepreciationMethod(value);
+                    _expectedLifeController.text =
+                        value.defaultExpectedLifeDays.toString();
+                  },
+          ),
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            '已根据折旧方法预填寿命天数，可手动修改',
+            style: Theme.of(context).textTheme.bodySmall,
           ),
           const SizedBox(height: AppSpacing.md),
           TextField(

@@ -9,6 +9,7 @@ class CategoryMapper {
       id: dbModel.id,
       name: dbModel.name,
       icon: dbModel.icon,
+      description: dbModel.description,
       sortOrder: dbModel.sortOrder,
       isDefault: dbModel.isDefault,
       createdAt: dbModel.createdAt,
