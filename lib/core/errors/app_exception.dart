@@ -12,17 +12,17 @@ class AppException implements Exception {
 }
 
 class ValidationException extends AppException {
-  ValidationException({required String message}) : super(message: message);
+  ValidationException({required super.message});
 }
 
 class StorageException extends AppException {
-  StorageException({required String message}) : super(message: message);
+  StorageException({required super.message});
 }
 
 class NotFoundException extends AppException {
-  NotFoundException({required String message}) : super(message: message);
+  NotFoundException({required super.message});
 }
 
 class ConflictException extends AppException {
-  ConflictException({required String message}) : super(message: message);
+  ConflictException({required super.message});
 }

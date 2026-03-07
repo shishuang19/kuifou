@@ -10,9 +10,6 @@ class ValidationService {
     if (value.length > 40) {
       return '资产名称不能超过40个字符';
     }
-    if (value.length < 1) {
-      return '资产名称至少需要1个字符';
-    }
     return null;
   }
 

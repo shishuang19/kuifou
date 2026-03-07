@@ -6,6 +6,6 @@ QueryExecutor createDatabaseConnection({bool inMemory = false}) {
   if (inMemory) {
     return NativeDatabase.memory();
   }
-  // TODO: 添加持久化数据库支持
+  // V1 keeps an in-memory database; persistent storage will be added in a later milestone.
   return NativeDatabase.memory();
 }

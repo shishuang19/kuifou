@@ -32,7 +32,7 @@ class DashboardMetricsCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: AppColors.gradientStart.withOpacity(0.3),
+            color: AppColors.gradientStart.withValues(alpha: 0.3),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -113,7 +113,7 @@ class _MetricItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.bgPrimary.withOpacity(0.3),
+        color: AppColors.bgPrimary.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(AppRadius.md),
       ),
       child: Column(

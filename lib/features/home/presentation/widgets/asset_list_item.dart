@@ -35,7 +35,7 @@ class AssetListItem extends StatelessWidget {
       color: AppColors.cardBg,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.md),
-        side: BorderSide(
+        side: const BorderSide(
           color: AppColors.cardBorder,
           width: 1,
         ),
@@ -179,7 +179,7 @@ class _StatusBadge extends StatelessWidget {
         vertical: AppSpacing.xs,
       ),
       decoration: BoxDecoration(
-        color: _getStatusColor().withOpacity(0.2),
+        color: _getStatusColor().withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(AppRadius.sm),
       ),
       child: Text(
