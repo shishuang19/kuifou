@@ -6,11 +6,11 @@ part of 'asset_list_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appDatabaseHash() => r'6b3fea5b2873d755394d57b5955f1a3a0fe80d1b';
+String _$appDatabaseHash() => r'59d1a22b2c56bd89a51f1b241736a967dd48328a';
 
 /// See also [appDatabase].
 @ProviderFor(appDatabase)
-final appDatabaseProvider = AutoDisposeProvider<AppDatabase>.internal(
+final appDatabaseProvider = Provider<AppDatabase>.internal(
   appDatabase,
   name: r'appDatabaseProvider',
   debugGetCreateSourceHash:
@@ -21,12 +21,12 @@ final appDatabaseProvider = AutoDisposeProvider<AppDatabase>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef AppDatabaseRef = AutoDisposeProviderRef<AppDatabase>;
-String _$assetRepositoryHash() => r'345aa32a70683ec00182e8ea5990593992e84be7';
+typedef AppDatabaseRef = ProviderRef<AppDatabase>;
+String _$assetRepositoryHash() => r'fc34f3774e1a58d398183722341346f8d97a03ca';
 
 /// See also [assetRepository].
 @ProviderFor(assetRepository)
-final assetRepositoryProvider = AutoDisposeProvider<AssetRepository>.internal(
+final assetRepositoryProvider = Provider<AssetRepository>.internal(
   assetRepository,
   name: r'assetRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -38,7 +38,7 @@ final assetRepositoryProvider = AutoDisposeProvider<AssetRepository>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef AssetRepositoryRef = AutoDisposeProviderRef<AssetRepository>;
+typedef AssetRepositoryRef = ProviderRef<AssetRepository>;
 String _$assetListHash() => r'3c35422b7f1495506dceca41b28251ce838acf6f';
 
 /// See also [assetList].

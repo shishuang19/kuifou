@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:kuifou/core/errors/app_exception.dart';
 import 'package:kuifou/core/errors/result.dart';
 import 'package:kuifou/features/home/domain/entities/asset.dart';
 import 'package:kuifou/features/home/domain/repositories/asset_repository.dart';
@@ -12,6 +13,7 @@ import 'package:kuifou/features/profile/presentation/providers/profile_preferenc
 class _FakeAssetRepository implements AssetRepository {
   bool createCalled = false;
   bool updateCalled = false;
+  bool failDuplicateOnCreate = false;
 
   String? lastName;
   String? lastCategoryId;
@@ -59,6 +61,15 @@ class _FakeAssetRepository implements AssetRepository {
     createCalled = true;
     lastName = name;
     lastCategoryId = categoryId;
+
+    if (failDuplicateOnCreate) {
+      return Failure(
+        StorageException(
+          message:
+              'SqliteException(2067): UNIQUE constraint failed: assets.category_id, assets.name',
+        ),
+      );
+    }
 
     return Success(
       _assetFromInput(
@@ -227,6 +238,44 @@ void main() {
         state.expectedLifeDays,
         DepreciationMethodPreference.doubleDeclining.defaultExpectedLifeDays,
       );
+
+      final purchase = state.purchaseDate;
+      expect(
+        state.warrantyEndDate,
+        DateTime(purchase.year + 1, purchase.month, purchase.day),
+      );
+    });
+
+    test('purchase date change auto-updates default warranty to +1 year', () {
+      final repository = _FakeAssetRepository();
+      final container = createContainer(repository);
+      addTearDown(container.dispose);
+
+      final notifier = container.read(assetFormNotifierProvider.notifier);
+      notifier.updatePurchaseDate(DateTime(2026, 3, 11));
+
+      final state = container.read(assetFormNotifierProvider);
+      expect(state.warrantyEndDate, DateTime(2027, 3, 11));
+    });
+
+    test('save shows duplicate name error under name field', () async {
+      final repository = _FakeAssetRepository()..failDuplicateOnCreate = true;
+      final container = createContainer(repository);
+      addTearDown(container.dispose);
+
+      final notifier = container.read(assetFormNotifierProvider.notifier);
+      notifier.updateName('重复资产');
+      notifier.updateCategoryId('cat-electronics');
+      notifier.updateIcon('📷');
+      notifier.updatePurchasePrice(21323);
+      notifier.updatePurchaseDate(DateTime(2026, 3, 11));
+
+      final success = await notifier.save();
+      final state = container.read(assetFormNotifierProvider);
+
+      expect(success, isFalse);
+      expect(state.errors['name'], '名称已存在');
+      expect(state.errors['general'], isNull);
     });
   });
 }

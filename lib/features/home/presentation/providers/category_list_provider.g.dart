@@ -7,12 +7,11 @@ part of 'category_list_provider.dart';
 // **************************************************************************
 
 String _$categoryRepositoryHash() =>
-    r'564f6cb4fd69d0cc61b35d99542a09b9b7b99c8a';
+    r'1efec711b799052dda279d6d6f96e43d25496053';
 
 /// See also [categoryRepository].
 @ProviderFor(categoryRepository)
-final categoryRepositoryProvider =
-    AutoDisposeProvider<CategoryRepository>.internal(
+final categoryRepositoryProvider = Provider<CategoryRepository>.internal(
   categoryRepository,
   name: r'categoryRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -24,7 +23,7 @@ final categoryRepositoryProvider =
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef CategoryRepositoryRef = AutoDisposeProviderRef<CategoryRepository>;
+typedef CategoryRepositoryRef = ProviderRef<CategoryRepository>;
 String _$categoryListHash() => r'1e85928fa69267d41c184651c7115bcf40f6820a';
 
 /// See also [categoryList].

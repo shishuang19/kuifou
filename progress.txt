@@ -1,9 +1,9 @@
 PROJECT: 亏否 (Personal Asset Depreciation App)
-LAST_UPDATED: 2026-03-07 15:48 UTC
+LAST_UPDATED: 2026-03-11 15:00 UTC
 CURRENT_BRANCH: phase/m3-foundation
 CURRENT_PHASE: M3 IN PROGRESS 🚧 (Priority 1/2 done, Priority 3 core done; backup file workflow pending)
 GIT_REMOTE_URL: https://github.com/shishuang19/kuifou.git
-GIT_HEAD_COMMIT: 99462de (chore: fix lint warnings)
+GIT_HEAD_COMMIT: c9f0150 (feat(M3): complete profile category backup foundation)
 
 [SESSION_START_RULE]
 - Every new AI session / new terminal / branch switch must read:
@@ -295,6 +295,53 @@ GIT_HEAD_COMMIT: 99462de (chore: fix lint warnings)
   ✅ Added provider test for reorder behavior and sortOrder normalization
   ✅ Validation:
     - flutter test test/providers/category_management_provider_test.dart test/widgets/category_page_widget_test.dart: ✅ 5 tests passed
+
+- M3 Web Database Runtime FIX (2026-03-11):
+  ✅ Fixed drift web sql.js runtime loading failure:
+    - Added `web/sql-wasm.js`
+    - Added `web/sql-wasm.wasm`
+    - Updated `web/index.html` to load local `sql-wasm.js`
+  ✅ Stabilized database lifecycle in Riverpod:
+    - Set `appDatabaseProvider` as keepAlive singleton
+    - Set repository providers (`assetRepositoryProvider` / `categoryRepositoryProvider`) to keepAlive
+    - Eliminated repeated AppDatabase instantiation warning risk
+  ✅ Validation:
+    - flutter pub run build_runner build --delete-conflicting-outputs: ✅ wrote 72 outputs
+    - flutter test test/providers/asset_list_provider_test.dart test/providers/category_management_provider_test.dart: ✅ 8 tests passed
+    - flutter analyze: ✅ No issues found
+    - flutter build web --release: ✅ Success
+
+- M3 Navigation & Dev Workflow POLISH (2026-03-11):
+  ✅ Added quick "return home" action in app bars:
+    - ProfilePage
+    - CategoryPage
+    - BackupRestorePage
+  ✅ Added fixed-port web debug config:
+    - Added `.vscode/launch.json`
+    - New config: `Flutter Web (Chrome, Fixed Port)` (`--web-port 53793`)
+  ✅ Updated README guidance for web data persistence during development:
+    - Added fixed port startup command
+    - Added IndexedDB origin/port behavior note
+  ✅ Validation:
+    - flutter test test/widgets/profile_page_widget_test.dart test/widgets/category_page_widget_test.dart test/widgets/backup_restore_page_widget_test.dart: ✅ 4 tests passed
+    - get_errors on modified files: ✅ No issues found
+
+- M3 Asset Form Duplicate-Name UX FIX (2026-03-11):
+  ✅ Duplicate asset-name save errors now map to field-level message:
+    - `errors['name'] = '名称已存在'`
+    - no top-level general error banner for this case
+  ✅ Improved category-change behavior:
+    - changing category clears duplicate-name field error
+  ✅ Validation:
+    - flutter test test/providers/asset_form_provider_test.dart: ✅ 5 tests passed
+    - get_errors on modified files: ✅ No issues found
+
+- M3 macOS Build Warning Suppression (2026-03-11):
+  ✅ Pod-level warning silencing for `sqlite3` applied in `macos/Podfile`
+    - `GCC_WARN_INHIBIT_ALL_WARNINGS = YES`
+    - `OTHER_CFLAGS` append `-w`
+  ✅ Verified effective in release build:
+    - `flutter build macos --release`: ✅ Success (no sqlite3 warning flood)
 
 [IN_PROGRESS]
 **[M3 - Remaining Work]**

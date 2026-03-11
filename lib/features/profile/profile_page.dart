@@ -16,7 +16,16 @@ class ProfilePage extends ConsumerWidget {
     final notifier = ref.read(profilePreferencesNotifierProvider.notifier);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('个人中心')),
+      appBar: AppBar(
+        title: const Text('个人中心'),
+        actions: [
+          IconButton(
+            tooltip: '返回首页',
+            onPressed: () => context.go('/'),
+            icon: const Icon(Icons.home_outlined),
+          ),
+        ],
+      ),
       body: preferencesAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, _) {

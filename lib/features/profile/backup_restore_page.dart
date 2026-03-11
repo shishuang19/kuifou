@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../app/theme/spacing.dart';
 import '../home/presentation/providers/asset_list_provider.dart';
@@ -30,7 +31,16 @@ class _BackupRestorePageState extends ConsumerState<BackupRestorePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('备份与恢复')),
+      appBar: AppBar(
+        title: const Text('备份与恢复'),
+        actions: [
+          IconButton(
+            tooltip: '返回首页',
+            onPressed: () => context.go('/'),
+            icon: const Icon(Icons.home_outlined),
+          ),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         children: [

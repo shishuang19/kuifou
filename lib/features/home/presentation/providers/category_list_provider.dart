@@ -1,20 +1,14 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/entities/category.dart';
 import '../../domain/repositories/category_repository.dart';
 import '../../data/repositories/category_repository_impl.dart';
 import 'asset_list_provider.dart';
-import 'web_in_memory_repositories.dart';
 
 part 'category_list_provider.g.dart';
 
 // Category repository provider
-@riverpod
+@Riverpod(keepAlive: true)
 CategoryRepository categoryRepository(CategoryRepositoryRef ref) {
-  if (kIsWeb) {
-    return WebInMemoryCategoryRepository();
-  }
-
   final database = ref.watch(appDatabaseProvider);
   return CategoryRepositoryImpl(database: database);
 }

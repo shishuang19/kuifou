@@ -97,12 +97,16 @@ class AssetFormState {
 // Asset form notifier
 @riverpod
 class AssetFormNotifier extends _$AssetFormNotifier {
+  static const _duplicateNameErrorMessage = '名称已存在';
+
   @override
   AssetFormState build() {
     final defaultMethod = ref.read(defaultDepreciationMethodPreferenceProvider);
+    final purchaseDate = DateTime.now();
 
     return AssetFormState(
-      purchaseDate: DateTime.now(),
+      purchaseDate: purchaseDate,
+      warrantyEndDate: _defaultWarrantyEndDate(purchaseDate),
       expectedLifeDays: defaultMethod.defaultExpectedLifeDays,
       depreciationMethod: defaultMethod,
     );
@@ -116,9 +120,11 @@ class AssetFormNotifier extends _$AssetFormNotifier {
   // Reset form
   void reset() {
     final defaultMethod = ref.read(defaultDepreciationMethodPreferenceProvider);
+    final purchaseDate = DateTime.now();
 
     state = AssetFormState(
-      purchaseDate: DateTime.now(),
+      purchaseDate: purchaseDate,
+      warrantyEndDate: _defaultWarrantyEndDate(purchaseDate),
       expectedLifeDays: defaultMethod.defaultExpectedLifeDays,
       depreciationMethod: defaultMethod,
     );
@@ -133,9 +139,14 @@ class AssetFormNotifier extends _$AssetFormNotifier {
   }
 
   void updateCategoryId(String categoryId) {
+    final nextErrors = {...state.errors}..remove('categoryId');
+    if (nextErrors['name'] == _duplicateNameErrorMessage) {
+      nextErrors.remove('name');
+    }
+
     state = state.copyWith(
       categoryId: categoryId,
-      errors: {...state.errors}..remove('categoryId'),
+      errors: nextErrors,
     );
   }
 
@@ -154,8 +165,19 @@ class AssetFormNotifier extends _$AssetFormNotifier {
   }
 
   void updatePurchaseDate(DateTime date) {
+    final previousPurchaseDate = state.purchaseDate;
+    final previousWarrantyEndDate = state.warrantyEndDate;
+    final previousDefaultWarranty =
+        _defaultWarrantyEndDate(previousPurchaseDate);
+
+    final shouldAutoUpdateWarranty = previousWarrantyEndDate == null ||
+        _isSameDate(previousWarrantyEndDate, previousDefaultWarranty);
+
     state = state.copyWith(
       purchaseDate: date,
+      warrantyEndDate: shouldAutoUpdateWarranty
+          ? _defaultWarrantyEndDate(date)
+          : state.warrantyEndDate,
       errors: {...state.errors}..remove('purchaseDate'),
     );
   }
@@ -274,17 +296,47 @@ class AssetFormNotifier extends _$AssetFormNotifier {
               error is AppException ? error.message : error.toString();
           state = state.copyWith(
             isLoading: false,
-            errors: {'general': message},
+            errors: _mapSaveErrors(message),
           );
           return false;
         },
       );
     } catch (e) {
+      final message = e.toString();
       state = state.copyWith(
         isLoading: false,
-        errors: {'general': e.toString()},
+        errors: _mapSaveErrors(message),
       );
       return false;
     }
+  }
+
+  Map<String, String?> _mapSaveErrors(String message) {
+    if (_isDuplicateNameConstraintError(message)) {
+      return {'name': _duplicateNameErrorMessage};
+    }
+
+    return {'general': message};
+  }
+
+  bool _isDuplicateNameConstraintError(String message) {
+    final normalized = message.toLowerCase();
+    return normalized.contains('unique constraint failed') &&
+        normalized.contains('assets.category_id') &&
+        normalized.contains('assets.name');
+  }
+
+  DateTime _defaultWarrantyEndDate(DateTime purchaseDate) {
+    return DateTime(
+      purchaseDate.year + 1,
+      purchaseDate.month,
+      purchaseDate.day,
+    );
+  }
+
+  bool _isSameDate(DateTime left, DateTime right) {
+    return left.year == right.year &&
+        left.month == right.month &&
+        left.day == right.day;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../app/theme/colors.dart';
 import '../../app/theme/radius.dart';
@@ -20,6 +21,13 @@ class CategoryPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('分类管理'),
+        actions: [
+          IconButton(
+            tooltip: '返回首页',
+            onPressed: () => context.go('/'),
+            icon: const Icon(Icons.home_outlined),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _openCreateDialog(context, ref),

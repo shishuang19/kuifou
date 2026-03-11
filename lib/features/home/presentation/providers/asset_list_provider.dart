@@ -1,27 +1,21 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/entities/asset.dart';
 import '../../domain/repositories/asset_repository.dart';
 import '../../data/repositories/asset_repository_impl.dart';
 import '../../data/datasources/local/db/app_database.dart';
 import '../../data/datasources/local/db/database_connection.dart';
-import 'web_in_memory_repositories.dart';
 
 part 'asset_list_provider.g.dart';
 
 // Database provider (singleton)
-@riverpod
+@Riverpod(keepAlive: true)
 AppDatabase appDatabase(AppDatabaseRef ref) {
-  return AppDatabase(getDatabaseConnection(inMemory: true));
+  return AppDatabase(getDatabaseConnection(inMemory: false));
 }
 
 // Asset repository provider
-@riverpod
+@Riverpod(keepAlive: true)
 AssetRepository assetRepository(AssetRepositoryRef ref) {
-  if (kIsWeb) {
-    return WebInMemoryAssetRepository();
-  }
-
   final database = ref.watch(appDatabaseProvider);
   return AssetRepositoryImpl(database: database);
 }
